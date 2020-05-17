@@ -10,6 +10,13 @@ const path = require('path');
 const { config, port, redis, scraper, keys } = require('./routes/instances');
 const { updateNYTCache } = require('./utils/nytCache');
 const { updateAppleCache } = require('./utils/appleCache');
+const https = require('https');
+const spdy = require('spdy')
+const fs = require('fs');
+const credentials = {
+	    key: fs.readFileSync('key.pem'),
+	    cert: fs.readFileSync('cert.pem')
+      };
 
 if (config.sentry_key) Sentry.init({ dsn: config.sentry_key });
 
@@ -86,5 +93,9 @@ app.use(require('./routes/apiApple'));
 app.use(require('./routes/apiGov'));
 
 app.listen(port, () => logger.info(`Your app is listening on port ${port}`));
+var httpsServer = https.createServer(credentials, app);
+spdy.createServer(credentials, app).listen(443, () =>
+	logger.info(`HTTP/2 on 443`)
+);
 
 module.exports = app;

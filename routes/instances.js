@@ -14,9 +14,9 @@ const govData = require('../scrapers/govScrapers/getGovData');
 // KEYS
 const { config, keys, port } = require('../config');
 
-const redis = new Redis(config.redis.host, {
-	password: config.redis.password,
-	port: config.redis.port
+const redis = new Redis({
+	host: "covid-stats.0hhjj2.0001.use1.cache.amazonaws.com",
+	port: 6379
 });
 
 module.exports = {
