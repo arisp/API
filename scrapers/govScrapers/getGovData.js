@@ -1,12 +1,4 @@
-const canadaData = require('./getCanada');
-const italyData = require('./getItaly');
-const germanyData = require('./getGermany');
-const austriaData = require('./getAustria');
-const switzerlandData = require('./getSwitzerland');
-const nigeriaData = require('./getNigeria');
 const ukData = require('./getUK');
-const indiaData = require('./getIndia');
-const vietnamData = require('./getVietnam');
 const logger = require('../../utils/logger');
 
 /**
@@ -22,15 +14,7 @@ const govData = async (keys, redis) => {
 			data[country] = await fn();
 		};
 		await Promise.all([
-			{ country: 'Canada', fn: canadaData },
-			{ country: 'Italy', fn: italyData },
-			{ country: 'Germany', fn: germanyData },
-			{ country: 'Austria', fn: austriaData },
-			{ country: 'Switzerland', fn: switzerlandData },
-			{ country: 'Nigeria', fn: nigeriaData },
-			{ country: 'UK', fn: ukData },
-			{ country: 'India', fn: indiaData },
-			{ country: 'Vietnam', fn: vietnamData }
+			{ country: 'UK', fn: ukData }
 		].map(_resolveData));
 		redis.set(keys.gov_countries, JSON.stringify(data));
 		logger.info(`Updated gov data: ${Object.keys(data).length} government sources`);
